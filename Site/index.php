@@ -52,28 +52,33 @@
     }
     ?>
 
-    <div class="login-container">
-        <div class="site-name">Bem-vindo ao RentalMate</div> <!-- Nome do site aqui -->
-        <p>Faça login para continuar</p>
-        <form method="POST">
-            <div class="input-group">
-                <i class="fa fa-user"></i>
-                <input type="email" placeholder="Email" id="email" name="email" required>
+    <div class="container">
+        <div class="image-section"></div>
+        <div class="form-section">
+            <div class="login-container">
+                <div class="site-name">Bem-vindo ao RentalMate</div> <!-- Nome do site aqui -->
+                <p>Faça login para continuar</p>
+                <form method="POST">
+                    <div class="input-group">
+                        <i class="fa fa-user"></i>
+                        <input type="email" placeholder="Email" id="email" name="email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa fa-lock"></i>
+                        <input type="password" placeholder="Senha" id="senha" name="senha" required>
+                    </div>
+                    <?php
+                    if (!empty($login_error)) {
+                        echo '<p style="color: red;">' . $login_error . '</p>';
+                    }
+                    ?>
+                    <button type="submit">Entrar</button>
+                    <a href="#">Esqueceu a senha?</a>
+                    <br>
+                    <a href="register.php">Registrar-se</a>
+                </form>
             </div>
-            <div class="input-group">
-                <i class="fa fa-lock"></i>
-                <input type="password" placeholder="Senha" id="senha" name="senha" required>
-            </div>
-            <?php
-            if (!empty($login_error)) {
-                echo '<p style="color: red;">' . $login_error . '</p>';
-            }
-            ?>
-            <button type="submit">Entrar</button>
-            <a href="#">Esqueceu a senha?</a>
-            <br>
-            <a href="register.php">Registrar-se</a>
-        </form>
+        </div>
     </div>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>

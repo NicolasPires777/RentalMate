@@ -15,14 +15,32 @@ body {
     color: #fff;
 }
 
-.login-container {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px;
+.container {
+    display: flex;
+    height: 80%;
+    width: 80%;
+    border-style: solid;
+    border-color: #333;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.image-section {
+    flex: 1.62;
+    background: url('../images/fundo.png') no-repeat center center/cover; /* Altere 'your-image.jpg' para o caminho da sua imagem */
+}
+
+.form-section {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    max-width: 400px;
-    width: 100%;
+    padding-right: 50px;
 }
 
 .site-name {
@@ -47,6 +65,7 @@ body {
 .login-container .input-group {
     position: relative;
     margin-bottom: 15px;
+    width: 100%;
 }
 
 .login-container .input-group input {
@@ -75,7 +94,6 @@ body {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    margin-bottom: 10px;
 }
 
 .login-container button:hover {

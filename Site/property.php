@@ -56,7 +56,7 @@
             <a href="aluguel.php?property_id=<?php echo htmlspecialchars($property_id); ?>&nome=<?php echo htmlspecialchars($property_name); ?>" class="option-item">
                 <img src="icones/alugueis.png" alt="Aluguéis">
             </a>
-            <a href="devpage.php" class="option-item">
+            <a href="calendario.php?property_id=<?php echo htmlspecialchars($property_id); ?>&nome=<?php echo htmlspecialchars($property_name); ?>" class="option-item">
                 <img src="icones/calendario.png" alt="Calendário">
             </a>
             <a href="clientes.php" class="option-item">
