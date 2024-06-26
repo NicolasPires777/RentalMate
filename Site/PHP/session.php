@@ -18,7 +18,7 @@
     } elseif ($_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT']) {
         session_unset();
         session_destroy();
-        header('Location: index.php');
+        header('Location: index.html');
         exit();
     }
 ?>

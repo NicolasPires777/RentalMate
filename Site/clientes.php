@@ -8,8 +8,15 @@
 </head>
 <body>
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'PHP/connect.php';
 include 'PHP/session.php';
+
+$property_id = isset($_GET['property_id']) ? $_GET['property_id'] : '';
+$property_name = isset($_GET['nome']) ? $_GET['nome'] : '';
 
 // Verifica se o usuário está logado
 if (isset($_SESSION['user_id'])) {
@@ -27,12 +34,12 @@ if (isset($_SESSION['user_id'])) {
         $user_name = ucfirst($user['Nome']);
     } else {
         // Se não encontrar o usuário, redireciona para a página de login
-        header("Location: index.php");
+        header("Location: index.html");
         exit();
     }
 } else {
     // Se não estiver logado, redireciona para a página de login
-    header("Location: index.php");
+    header("Location: index.html");
     exit();
 }
 
@@ -41,8 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_id'])) {
     $delete_id = $_POST['delete_id'];
     $sql_delete = "DELETE FROM clientes WHERE id = ? AND dono = ?";
     $stmt_delete = $conn->prepare($sql_delete);
-    $stmt_delete->bind_param("ii", $delete_id, $user_id);
+    if (!$stmt_delete) {
+        die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+    }
+    $stmt_delete->bind_param("ii", $delete_id, $property_id);
     $stmt_delete->execute();
+    if ($stmt_delete->errno) {
+        die("Execute failed: (" . $stmt_delete->errno . ") " . $stmt_delete->error);
+    }
     header("Location: clientes.php");
     exit();
 }
@@ -56,8 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit_id'])) {
 
     $sql_edit = "UPDATE clientes SET Nome = ?, telefone = ?, pet = ? WHERE id = ? AND dono = ?";
     $stmt_edit = $conn->prepare($sql_edit);
-    $stmt_edit->bind_param("ssiii", $nome, $telefone, $pet, $edit_id, $user_id);
+    if (!$stmt_edit) {
+        die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+    }
+    $stmt_edit->bind_param("ssiii", $nome, $telefone, $pet, $edit_id, $property_id);
     $stmt_edit->execute();
+    if ($stmt_edit->errno) {
+        die("Execute failed: (" . $stmt_edit->errno . ") " . $stmt_edit->error);
+    }
     header("Location: clientes.php");
     exit();
 }
@@ -67,19 +86,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_cliente'])) {
     $nome = $_POST['nome'];
     $telefone = $_POST['telefone'];
     $pet = isset($_POST['pet']) ? 1 : 0;
+    $property_id = $_POST['add_cliente'];
+    print_r($property_id);
+
+    // Debug: Verificar valores recebidos
+    error_log("Nome: $nome, Telefone: $telefone, Pet: $pet");
 
     $sql_add = "INSERT INTO clientes (Nome, telefone, pet, dono) VALUES (?, ?, ?, ?)";
     $stmt_add = $conn->prepare($sql_add);
-    $stmt_add->bind_param("ssii", $nome, $telefone, $pet, $user_id);
+    if (!$stmt_add) {
+        die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+    }
+    $stmt_add->bind_param("ssii", $nome, $telefone, $pet, $property_id);
     $stmt_add->execute();
-    header("Location: clientes.php");
+    if ($stmt_add->errno) {
+        die("Execute failed: (" . $stmt_add->errno . ") " . $stmt_add->error);
+    }
+    header("Location: clientes.php?property_id=$property_id&nome=" . urlencode($property_name));
     exit();
 }
 
 // Busca os clientes do usuário logado
 $sql = "SELECT * FROM clientes WHERE dono = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
+if (!$stmt) {
+    die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+}
+$stmt->bind_param("i", $property_id);
 $stmt->execute();
 $clientes = $stmt->get_result();
 ?>
@@ -143,7 +176,7 @@ $clientes = $stmt->get_result();
             <span class="close-button" onclick="closeAddModal()">&times;</span>
             <h2>Adicionar Novo Cliente</h2>
             <form action="clientes.php" method="post">
-                <input type="hidden" name="add_cliente" value="1">
+                <input type="hidden" name="add_cliente" value="<?php echo htmlspecialchars($property_id); ?>">
                 <label for="add_nome">Nome:</label>
                 <input type="text" id="add_nome" name="nome" required>
                 <label for="add_telefone">Telefone:</label>
@@ -157,7 +190,7 @@ $clientes = $stmt->get_result();
 
     <script>
         function deslogar(){
-            window.location.href="index.php"
+            window.location.href="index.html"
         }
 
         function openEditModal(id, nome, telefone, pet) {
@@ -181,7 +214,7 @@ $clientes = $stmt->get_result();
         }
 
         function voltar() {
-            window.history.back();
+            window.location.href='property.php?id=<?php echo $property_id; ?>&nome=<?php echo urlencode($property_name); ?>';
         }
 
         window.onclick = function(event) {

@@ -58,12 +58,12 @@
             $user_name = ucfirst($user['nome']);
         } else {
             // Se não encontrar o usuário, redireciona para a página de login
-            header("Location: index.php");
+            header("Location: index.html");
             exit();
         }
     } else {
         // Se não estiver logado, redireciona para a página de login
-        header("Location: index.php");
+        header("Location: index.html");
         exit();
     }
     ?>
@@ -85,7 +85,7 @@
     </div>
     <script>
     function deslogar(){
-        window.location.href="index.php"
+        window.location.href="index.html"
     }
     </script>
 </body>

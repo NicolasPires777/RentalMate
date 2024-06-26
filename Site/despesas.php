@@ -27,12 +27,12 @@ if (isset($_SESSION['user_id'])) {
         $user_name = ucfirst($user['nome']);
     } else {
         // Se não encontrar o usuário, redireciona para a página de login
-        header("Location: index.php");
+        header("Location: index.html");
         exit();
     }
 } else {
     // Se não estiver logado, redireciona para a página de login
-    header("Location: index.php");
+    header("Location: index.html");
     exit();
 }
 
@@ -221,7 +221,7 @@ function formatDate($date) {
 
     <script>
         function deslogar() {
-            window.location.href = "index.php";
+            window.location.href = "index.html";
         }
 
         function confirmDelete(expenseId) {

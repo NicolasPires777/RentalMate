@@ -27,12 +27,12 @@ if (isset($_SESSION['user_id'])) {
         $user_name = ucfirst($user['nome']);
     } else {
         // Se não encontrar o usuário, redireciona para a página de login
-        header("Location: index.php");
+        header("Location: index.html");
         exit();
     }
 } else {
     // Se não estiver logado, redireciona para a página de login
-    header("Location: index.php");
+    header("Location: index.html");
     exit();
 }
 
@@ -115,13 +115,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['novo_aluguel'])) {
             }
         }
     }
+    header("Location: aluguel.php?property_id=$property_id&nome=" . urlencode($property_name));
 }
 
 
 // Busca os clientes do usuário logado
 $sql_clientes = "SELECT id, nome FROM clientes WHERE dono = ?";
 $stmt_clientes = $conn->prepare($sql_clientes);
-$stmt_clientes->bind_param("i", $user_id);
+$stmt_clientes->bind_param("i", $property_id);
 $stmt_clientes->execute();
 $clientes = $stmt_clientes->get_result();
 
@@ -290,7 +291,7 @@ $anteriores_alugueis = $stmt_anteriores->get_result();
 
     <script>
         function deslogar(){
-            window.location.href="index.php"
+            window.location.href="index.html"
         }
 
         function openModal() {

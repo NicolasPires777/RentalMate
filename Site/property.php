@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -27,12 +26,12 @@
             $user_name = ucfirst($user['nome']);
         } else {
             // Se não encontrar o usuário, redireciona para a página de login
-            header("Location: index.php");
+            header("Location: index.html");
             exit();
         }
     } else {
         // Se não estiver logado, redireciona para a página de login
-        header("Location: index.php");
+        header("Location: index.html");
         exit();
     }
 
@@ -59,7 +58,7 @@
             <a href="calendario.php?property_id=<?php echo htmlspecialchars($property_id); ?>&nome=<?php echo htmlspecialchars($property_name); ?>" class="option-item">
                 <img src="icones/calendario.png" alt="Calendário">
             </a>
-            <a href="clientes.php" class="option-item">
+            <a href="clientes.php?property_id=<?php echo htmlspecialchars($property_id); ?>&nome=<?php echo htmlspecialchars($property_name); ?>" class="option-item">
                 <img src="icones/clientes.png" alt="Clientes">
             </a>
             <a href="despesas.php?property_id=<?php echo htmlspecialchars($property_id); ?>&nome=<?php echo htmlspecialchars($property_name); ?>" class="option-item" class="option-item" class="option-item">
@@ -84,7 +83,7 @@
     </div>
     <script>
         function deslogar(){
-            window.location.href="index.php"
+            window.location.href="index.html"
         }
         function voltar() {
             window.location.href="menu.php";
